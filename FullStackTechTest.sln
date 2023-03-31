@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullStackTechTest", "FullStackTechTest\FullStackTechTest.csproj", "{6A241113-8E2D-473E-A810-92ED8B3CC49F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{05436D74-E5FC-4873-BA99-5389D6D4400B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A241113-8E2D-473E-A810-92ED8B3CC49F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A241113-8E2D-473E-A810-92ED8B3CC49F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A241113-8E2D-473E-A810-92ED8B3CC49F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A241113-8E2D-473E-A810-92ED8B3CC49F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05436D74-E5FC-4873-BA99-5389D6D4400B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05436D74-E5FC-4873-BA99-5389D6D4400B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05436D74-E5FC-4873-BA99-5389D6D4400B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05436D74-E5FC-4873-BA99-5389D6D4400B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,27 @@
+﻿@model FullStackTechTest.Models.Home.IndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var person in Model.PeopleList)
+        {
+            <tr class="clickable-row" data-href="@Url.Action("Details", new { id = person.Id})">
+                <td>@person.Id</td>
+                <td>@person.FirstName</td>
+                <td>@person.LastName</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
