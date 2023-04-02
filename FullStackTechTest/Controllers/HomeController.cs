@@ -3,6 +3,7 @@ using DAL;
 using Microsoft.AspNetCore.Mvc;
 using FullStackTechTest.Models.Home;
 using FullStackTechTest.Models.Shared;
+using Models;
 
 namespace FullStackTechTest.Controllers;
 
@@ -43,6 +44,28 @@ public class HomeController : Controller
         await _personRepository.SaveAsync(model.Person);
         await _addressRepository.SaveAsync(model.Address);
         return RedirectToAction("Details", new { id = model.Person.Id });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Upload(List<IFormFile> files)
+    {
+        long size = files.Sum(f => f.Length);
+
+        var filePaths = new List<string>();
+        foreach (var formFile in files)
+        {
+            if (formFile.Length > 0)
+            {
+                var filePath = Path.GetTempFileName();
+                filePaths.Add(filePath);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+            }
+        }
+        return Ok(new { count = files.Count, size, filePaths });
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
