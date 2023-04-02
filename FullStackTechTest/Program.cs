@@ -27,6 +27,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapControllerRoute(name: "upload",
+                pattern: "Home/Upload",
+                defaults: new { controller = "home", action = "Upload" });
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
