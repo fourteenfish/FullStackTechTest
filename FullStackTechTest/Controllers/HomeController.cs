@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using FullStackTechTest.Models.Home;
 using FullStackTechTest.Models.Shared;
 using Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.IO;
+using System.Collections.Generic;
 
 namespace FullStackTechTest.Controllers;
 
@@ -56,15 +60,44 @@ public class HomeController : Controller
         {
             if (formFile.Length > 0)
             {
-                var filePath = Path.GetTempFileName();
-                filePaths.Add(filePath);
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                //lets do validation for this file then
+                if (formFile.ContentType == "application/json")
                 {
-                    await formFile.CopyToAsync(stream);
+                    JsonSerializerOptions jsonoptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true};
+
+                    var filePath = Path.GetTempFileName();
+                    filePaths.Add(filePath);
+                    using (var stream = formFile.OpenReadStream())
+                    {
+                        List<PersonWithAddress>? newPersons = JsonSerializer.Deserialize<List<PersonWithAddress>>(stream, jsonoptions);
+
+                        //import each person
+                        foreach (var newPerson in newPersons)
+                        {
+                            //check if the person exists by GMC number, the import data doesn't have personId
+
+
+                            //import each address for each person
+                            //check if it exists by postcode first
+
+                        }
+                        Console.WriteLine("newPersons=" + newPersons?.ToString());
+                    }
+
+
+                } else
+                {
+                    return BadRequest();
                 }
 
+
+            } else
+            {
+                return NoContent();
             }
         }
+        
+
         return Ok(new { count = files.Count, size, filePaths });
     }
 
