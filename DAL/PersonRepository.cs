@@ -104,6 +104,29 @@ public class PersonRepository : IPersonRepository
         }
     }
 
+    public async Task InsertAsync(Person person)
+    {
+        var sql = new StringBuilder();
+        sql.AppendLine("Insert INTO people (`Id`,`FirstName`,`LastName`,`GMC`) VALUES (");
+        sql.AppendLine("@firstName,");
+        sql.AppendLine("@lastName,");
+        sql.AppendLine("@gmc");
+        sql.AppendLine(")");
+
+        await using (var connection = new MySqlConnection(Config.DbConnectionString))
+        {
+            await connection.OpenAsync();
+
+            var command = new MySqlCommand(sql.ToString(), connection);
+            command.Parameters.AddWithValue("firstName", person.FirstName);
+            command.Parameters.AddWithValue("lastName", person.LastName);
+            command.Parameters.AddWithValue("gmc", person.GMC);
+            command.Parameters.AddWithValue("personId", person.Id);
+
+            await command.ExecuteNonQueryAsync();
+        }
+    }
+
     private Person PopulatePerson(IDataRecord data)
     {
         var person = new Person
