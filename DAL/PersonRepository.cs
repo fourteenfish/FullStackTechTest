@@ -55,6 +55,32 @@ public class PersonRepository : IPersonRepository
         return person;
     }
 
+    public async Task<Person> GetByGMCAsync(int GMC)
+    {
+        var person = new Person();
+
+        var sql = new StringBuilder();
+        sql.AppendLine("SELECT * FROM people");
+        sql.AppendLine("WHERE GMC = @GMC");
+
+        await using (var connection = new MySqlConnection(Config.DbConnectionString))
+        {
+            await connection.OpenAsync();
+
+            var command = new MySqlCommand(sql.ToString(), connection);
+            command.Parameters.AddWithValue("GMC", GMC);
+
+            var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                person = PopulatePerson(reader);
+            }
+        }
+
+        return person;
+    }
+
+
     public async Task SaveAsync(Person person)
     {
         var sql = new StringBuilder();
