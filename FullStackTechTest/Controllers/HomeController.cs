@@ -75,8 +75,13 @@ public class HomeController : Controller
                         foreach (var newPerson in newPersons)
                         {
                             //check if the person exists by GMC number, the import data doesn't have personId
-
-
+                            Person personCheck =  await _personRepository.GetByGMCAsync(newPerson.GMC);
+                            if (personCheck != null)
+                            {
+                                //Validation done in the model attributes
+                                //update the person
+                                await _personRepository.SaveAsync(newPerson);
+                            }
                             //import each address for each person
                             //check if it exists by postcode first
 
@@ -106,4 +111,6 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    
 }
