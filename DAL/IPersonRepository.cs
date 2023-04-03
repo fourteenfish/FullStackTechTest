@@ -9,4 +9,6 @@ public interface IPersonRepository
 
     Task<Person> GetByGMCAsync(int GMC);
     Task SaveAsync(Person person);
+
+    Task InsertAsync(Person person);
 }
