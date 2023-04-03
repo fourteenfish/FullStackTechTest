@@ -76,14 +76,25 @@ public class HomeController : Controller
                         {
                             //check if the person exists by GMC number, the import data doesn't have personId
                             Person personCheck =  await _personRepository.GetByGMCAsync(newPerson.GMC);
-                            if (personCheck != null)
+                            if (personCheck.FirstName != null)
                             {
                                 //Validation done in the model attributes
+                                newPerson.Id = personCheck.Id;
                                 //update the person
                                 await _personRepository.SaveAsync(newPerson);
+                                ////update the address
+                                //Address addressCheck = await _addressRepository.GetForPersonIdAsync(personCheck.Id);
+                                //if (addressCheck != null)
+                                //{
+                                //    await _addressRepository.SaveAsync(address);
+                                //}
+                                    
+                                
                             }
                             //import each address for each person
                             //check if it exists by postcode first
+                            await _addressRepository.GetForPersonIdAsync(newPerson.Id);
+
 
                         }
                         Console.WriteLine("newPersons=" + newPersons?.ToString());
