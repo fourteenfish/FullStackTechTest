@@ -16,3 +16,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+input::file-selector-button, input[type=submit] {
+    background-color: #cf2d81;
+}

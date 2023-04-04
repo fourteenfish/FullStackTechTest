@@ -7,21 +7,21 @@
 <div class="container">
     <div>
         <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
-            <div class="form-group">
-                <div class="col-md-6">
-                    <p>Upload one or more files using this form:</p>
-                    <input type="file" name="files" multiple />
+            <div class="row">
+                <div class="col">
+                    
+                    <input type="file" name="files" multiple class="form-control" accept="application/json" id="selectfiles" style="display:hidden;" />
+                    
+                </div>
+                <div class="col">
+                    <input type="submit" value="Import" class="form-control" />
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-5">
-                    <input type="submit" value="Import" />
-                </div>
-            </div>
+            
         </form>
 
     </div>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover table-striped">
         <thead>
         <tr>
             <th>Id</th>
