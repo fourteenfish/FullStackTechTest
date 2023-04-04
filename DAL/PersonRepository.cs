@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using Models;
 using MySql.Data.MySqlClient;
@@ -104,10 +105,10 @@ public class PersonRepository : IPersonRepository
         }
     }
 
-    public async Task InsertAsync(Person person)
+    public async Task<int> InsertAsync(Person person)
     {
         var sql = new StringBuilder();
-        sql.AppendLine("Insert INTO people (`Id`,`FirstName`,`LastName`,`GMC`) VALUES (");
+        sql.AppendLine("Insert INTO people (`FirstName`,`LastName`,`GMC`) VALUES (");
         sql.AppendLine("@firstName,");
         sql.AppendLine("@lastName,");
         sql.AppendLine("@gmc");
@@ -123,6 +124,9 @@ public class PersonRepository : IPersonRepository
             command.Parameters.AddWithValue("gmc", person.GMC);
 
             await command.ExecuteNonQueryAsync();
+
+            //return the new ID
+            return (int)command.LastInsertedId;
         }
     }
 
