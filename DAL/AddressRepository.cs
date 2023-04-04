@@ -55,11 +55,11 @@ public class AddressRepository : IAddressRepository
         }
     }
 
-    public async Task InsertAsync(Address address)
+    public async Task<int> InsertAsync(Address address)
     {
         var sql = new StringBuilder();
-        sql.AppendLine("INSERT INTO addresses (`Id`,`PersonId`,`Line1`,`City`,`Postcode`) VALUE (");
-        sql.AppendLine("@personId");
+        sql.AppendLine("INSERT INTO addresses (`PersonId`,`Line1`,`City`,`Postcode`) VALUE (");
+        sql.AppendLine("@personId,");
         sql.AppendLine("@line1,");
         sql.AppendLine("@city,");
         sql.AppendLine("@postcode");
@@ -76,6 +76,8 @@ public class AddressRepository : IAddressRepository
             command.Parameters.AddWithValue("postcode", address.Postcode);
 
             await command.ExecuteNonQueryAsync();
+
+            return (int)command.LastInsertedId;
         }
     }
 

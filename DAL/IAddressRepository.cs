@@ -8,5 +8,5 @@ public interface IAddressRepository
 
     Task SaveAsync(Address address);
 
-    Task InsertAsync(Address address);
+    Task<int> InsertAsync(Address address);
 }
