@@ -121,7 +121,6 @@ public class PersonRepository : IPersonRepository
             command.Parameters.AddWithValue("firstName", person.FirstName);
             command.Parameters.AddWithValue("lastName", person.LastName);
             command.Parameters.AddWithValue("gmc", person.GMC);
-            command.Parameters.AddWithValue("personId", person.Id);
 
             await command.ExecuteNonQueryAsync();
         }
