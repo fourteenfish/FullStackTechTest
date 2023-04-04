@@ -55,6 +55,30 @@ public class AddressRepository : IAddressRepository
         }
     }
 
+    public async Task InsertAsync(Address address)
+    {
+        var sql = new StringBuilder();
+        sql.AppendLine("INSERT INTO addresses (`Id`,`PersonId`,`Line1`,`City`,`Postcode`) VALUE (");
+        sql.AppendLine("@personId");
+        sql.AppendLine("@line1,");
+        sql.AppendLine("@city,");
+        sql.AppendLine("@postcode");
+        sql.AppendLine(")");
+
+        await using (var connection = new MySqlConnection(Config.DbConnectionString))
+        {
+            await connection.OpenAsync();
+
+            var command = new MySqlCommand(sql.ToString(), connection);
+            command.Parameters.AddWithValue("personId", address.PersonId);
+            command.Parameters.AddWithValue("line1", address.Line1);
+            command.Parameters.AddWithValue("city", address.City);
+            command.Parameters.AddWithValue("postcode", address.Postcode);
+
+            await command.ExecuteNonQueryAsync();
+        }
+    }
+
     private Address PopulateAddress(IDataRecord data)
     {
         var address = new Address
