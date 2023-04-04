@@ -71,10 +71,8 @@ public class HomeController : Controller
                         {
                             await ImportPersons(newPersonWithAddresses);
                         }
-                        Console.WriteLine("newPersons=" + newPersonWithAddresses?.ToString());
                     }
-
-
+                    return Redirect("Index");
                 } else
                 {
                     return BadRequest();
