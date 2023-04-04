@@ -69,6 +69,7 @@ public class HomeController : Controller
                         List<PersonWithAddress>? newPersonWithAddresses = JsonSerializer.Deserialize<List<PersonWithAddress>>(stream, jsonoptions);
                         if (newPersonWithAddresses != null )
                         {
+                            
                             await ImportPersons(newPersonWithAddresses);
                         }
                     }
@@ -101,32 +102,38 @@ public class HomeController : Controller
         {
             foreach (var newPersonWithAddress in newPersonWithAddresses)
             {
-                //check if the person exists by GMC number, the import data doesn't have personId
-                Person personCheck = await _personRepository.GetByGMCAsync(newPersonWithAddress.GMC);
-                if (personCheck.FirstName != null)
+                if (newPersonWithAddress.GMC.ToString().Length == 7)
                 {
-                    //update person (already exists)
-                    //Validation done in the model attributes
-                    newPersonWithAddress.Id = personCheck.Id;
-                    //update the person
-                    //this is seems like the best thing to do here as the user will probably expect this;
-                    await _personRepository.SaveAsync(newPersonWithAddress);
-
-                    //look through all the addresses this person has
-                    //check to see if the address already exists
-                    //if it exists update
-                    //if it does not already exist then insert
-                    if (newPersonWithAddress.address != null)
+                    //check if the person exists by GMC number, the import data doesn't have personId
+                    Person personCheck = await _personRepository.GetByGMCAsync(newPersonWithAddress.GMC);
+                    if (personCheck.FirstName != null)
                     {
+                        //update person (already exists)
+                        //Validation done in the model attributes
+                        newPersonWithAddress.Id = personCheck.Id;
+                        //update the person
+                        //this is seems like the best thing to do here as the user will probably expect this;
+                        await _personRepository.SaveAsync(newPersonWithAddress);
+
+                        //look through all the addresses this person has
+                        //check to see if the address already exists
+                        //if it exists update
+                        //if it does not already exist then insert
+                        if (newPersonWithAddress.address != null)
+                        {
+                            ImportAddresses(newPersonWithAddress);
+                        }
+                    }
+                    else
+                    {
+                        //insert person
+                        newPersonWithAddress.Id = await _personRepository.InsertAsync(newPersonWithAddress);
+                        //insert the addresses
                         ImportAddresses(newPersonWithAddress);
                     }
-                } else
-                {
-                    //insert person
-                    newPersonWithAddress.Id = await _personRepository.InsertAsync(newPersonWithAddress);
-                    //insert the addresses
-                    ImportAddresses(newPersonWithAddress);
                 }
+                //TODO: throw this back to the page to show them this one isnt imported
+                    
 
             }
         }
