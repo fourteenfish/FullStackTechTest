@@ -14,6 +14,6 @@ namespace Models
 
     public class PersonWithAddress :Person
     {
-        public List<Address>? Addresses { get; set; }
+        public List<Address>? address { get; set; }
     }
 }

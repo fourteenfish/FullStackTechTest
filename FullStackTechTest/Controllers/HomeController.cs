@@ -5,9 +5,6 @@ using FullStackTechTest.Models.Home;
 using FullStackTechTest.Models.Shared;
 using Models;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.IO;
-using System.Collections.Generic;
 
 namespace FullStackTechTest.Controllers;
 
@@ -69,35 +66,12 @@ public class HomeController : Controller
                     filePaths.Add(filePath);
                     using (var stream = formFile.OpenReadStream())
                     {
-                        List<PersonWithAddress>? newPersons = JsonSerializer.Deserialize<List<PersonWithAddress>>(stream, jsonoptions);
-
-                        //import each person
-                        foreach (var newPerson in newPersons)
+                        List<PersonWithAddress>? newPersonWithAddresses = JsonSerializer.Deserialize<List<PersonWithAddress>>(stream, jsonoptions);
+                        if (newPersonWithAddresses != null )
                         {
-                            //check if the person exists by GMC number, the import data doesn't have personId
-                            Person personCheck =  await _personRepository.GetByGMCAsync(newPerson.GMC);
-                            if (personCheck.FirstName != null)
-                            {
-                                //Validation done in the model attributes
-                                newPerson.Id = personCheck.Id;
-                                //update the person
-                                await _personRepository.SaveAsync(newPerson);
-                                ////update the address
-                                //Address addressCheck = await _addressRepository.GetForPersonIdAsync(personCheck.Id);
-                                //if (addressCheck != null)
-                                //{
-                                //    await _addressRepository.SaveAsync(address);
-                                //}
-                                    
-                                
-                            }
-                            //import each address for each person
-                            //check if it exists by postcode first
-                            await _addressRepository.GetForPersonIdAsync(newPerson.Id);
-
-
+                            await ImportPersons(newPersonWithAddresses);
                         }
-                        Console.WriteLine("newPersons=" + newPersons?.ToString());
+                        Console.WriteLine("newPersons=" + newPersonWithAddresses?.ToString());
                     }
 
 
@@ -117,6 +91,87 @@ public class HomeController : Controller
         return Ok(new { count = files.Count, size, filePaths });
     }
 
+
+    /// <summary>
+    /// Updates each newPersonWithAddresses person and all of their addresses
+    /// </summary>
+    /// <param name="newPersonWithAddresses"></param>
+    public async Task ImportPersons(List<PersonWithAddress> newPersonWithAddresses)
+    {
+        //import each person
+        if (newPersonWithAddresses != null)
+        {
+            foreach (var newPersonWithAddress in newPersonWithAddresses)
+            {
+                //check if the person exists by GMC number, the import data doesn't have personId
+                Person personCheck = await _personRepository.GetByGMCAsync(newPersonWithAddress.GMC);
+                if (personCheck.FirstName != null)
+                {
+                    //update person (already exists)
+                    //Validation done in the model attributes
+                    newPersonWithAddress.Id = personCheck.Id;
+                    //update the person
+                    //this is seems like the best thing to do here as the user will probably expect this;
+                    await _personRepository.SaveAsync(newPersonWithAddress);
+
+                    //look through all the addresses this person has
+                    //check to see if the address already exists
+                    //if it exists update
+                    //if it does not already exist then insert
+                    if (newPersonWithAddress.address != null)
+                    {
+                        ImportAddresses(newPersonWithAddress);
+                    }
+                } else
+                {
+                    //insert person
+                    newPersonWithAddress.Id = await _personRepository.InsertAsync(newPersonWithAddress);
+                    //insert the addresses
+                    ImportAddresses(newPersonWithAddress);
+                }
+
+            }
+        }
+    }
+    /// <summary>
+    /// Updates/Inserts addresses of the newPerson
+    /// </summary>
+    /// <param name="newPersonWithAddress"></param>
+    public async void ImportAddresses(PersonWithAddress newPersonWithAddress)
+    {
+        //if it exists update
+        //if it does not already exist then insert
+        if (newPersonWithAddress.address != null)
+        {
+            // look through all the addresses this person has
+            foreach (Address newAddress in newPersonWithAddress.address)
+            {
+                //check to see if the address already exists - use a fuzzy match on the postcode
+
+                Address addressCheck = await _addressRepository.GetForPersonIdAsync(newPersonWithAddress.Id);
+                if (addressCheck.Postcode != null) {
+                    if (addressCheck.Postcode.ToLower().Replace(" ", String.Empty) == newAddress.Postcode.ToLower().Replace(" ", String.Empty))
+                    {
+                        ////update the address
+                        newAddress.Id = addressCheck.Id;
+                        await _addressRepository.SaveAsync(newAddress);
+                    } else
+                    {
+                        //Insert this new address for this person
+                        newAddress.PersonId = newPersonWithAddress.Id;
+                        await _addressRepository.InsertAsync(newAddress);
+                    }
+                } else
+                {
+                    //Insert this new address for this person
+                    newAddress.PersonId = newPersonWithAddress.Id;
+                    await _addressRepository.InsertAsync(newAddress);
+                }
+            }
+        }
+    }
+
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
