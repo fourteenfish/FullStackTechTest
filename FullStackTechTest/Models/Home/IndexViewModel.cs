@@ -1,11 +1,13 @@
 using DAL;
+using DAL.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
 using Models;
 
 namespace FullStackTechTest.Models.Home;
 
 public class IndexViewModel
 {
-    public List<Person> PeopleList { get; set; }
+    public List<Person>? PeopleList { get; set; }
 
     public static async Task<IndexViewModel> CreateAsync(IPersonRepository personRepository)
     {

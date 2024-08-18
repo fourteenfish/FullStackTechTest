@@ -1,4 +1,5 @@
-using DAL;
+using DAL.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
 using Models;
 
 namespace FullStackTechTest.Models.Home;
@@ -19,4 +20,5 @@ public class DetailsViewModel
         };
         return model;
     }
+
 }
