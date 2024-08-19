@@ -43,4 +43,25 @@ public class SpecialitiesRepository : GenericRepository<Speciality>, ISpecialiti
             await dbContext.SaveChangesAsync();
         }
     }
+
+    /// <summary>
+    /// Removes a speciality from the repository but first removes its dependancy.
+    /// </summary>
+    /// <param name="specialityId">Id of object to remove</param>
+    /// <returns>Task of operation.</returns>
+    public new async Task RemoveAsync(int specialityId)
+    {
+        var objectToDelete = await this.GetByIdAsync(specialityId);
+        var dependantObjectToDelete = await dbContext.people_specialities.FirstOrDefaultAsync(x => x.SpecialityId == specialityId);
+        if (dependantObjectToDelete != null)
+        {
+            dbContext.Remove(dependantObjectToDelete);
+        }
+        if(objectToDelete != null)
+        {
+            dbContext.Remove(objectToDelete);
+        }
+        await dbContext.SaveChangesAsync();
+        
+    }
 }
