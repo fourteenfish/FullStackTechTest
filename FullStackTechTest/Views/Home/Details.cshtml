@@ -40,12 +40,12 @@
         </div>
         <div class="form-group pb-4">
             <label>Specialities:</label>
-            <select @Model.Person.Specialities class="@(Model.IsEditing ? "form-control" : "form-control-plaintext")" @(Model.IsEditing ? "" : "readonly")>
-                @if (Model?.Person != null && Model?.Person.Specialities != null)
+            <select @Model.PeopleSpecialities class="@(Model.IsEditing ? "form-control" : "form-control-plaintext")" @(Model.IsEditing ? "" : "readonly")>
+                @if (Model?.Person != null && Model?.PeopleSpecialities != null)
                 {
-                    @foreach (var spec in Model?.Person?.Specialities!)
+                    @foreach (var spec in Model?.PeopleSpecialities!)
                     {
-                        <option value="@spec.Id">@spec.SpecialityName</option>
+                        <option value="@spec">@spec</option>
                     }
                 }
             </select>            

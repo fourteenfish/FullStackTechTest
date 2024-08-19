@@ -16,12 +16,14 @@ public class HomeController : Controller
     private readonly IPersonRepository _personRepository;
     private readonly IAddressRepository _addressRepository;
     private readonly ISpecialitiesRepository _specialitiesRepository;
+    private readonly IPersonSpecialitiesRepository _personSpecialitiesRepository;
     private readonly IDataImportService _dataImportService;
 
     public HomeController(ILogger<HomeController> logger,
         IPersonRepository personRepository, 
         IAddressRepository addressRepository,
         ISpecialitiesRepository specialitiesRepository,
+        IPersonSpecialitiesRepository personSpecialitiesRepository,
         IDataImportService dataImportService
         )
     {
@@ -29,6 +31,7 @@ public class HomeController : Controller
         _personRepository = personRepository;
         _addressRepository = addressRepository;
         this._specialitiesRepository = specialitiesRepository;
+        this._personSpecialitiesRepository = personSpecialitiesRepository;
         this._dataImportService = dataImportService;
     }
 
@@ -37,16 +40,21 @@ public class HomeController : Controller
         var model = await IndexViewModel.CreateAsync(_personRepository);
         return View(model);
     }
+    public async Task<IActionResult> Specialities()
+    {
+        var model = await SpecialitiesViewModel.CreateAsync(_specialitiesRepository);
+        return View(model);
+    }
 
     public async Task<IActionResult> Details(int id)
     {
-        var model = await DetailsViewModel.CreateAsync(id, false, _personRepository, _addressRepository);
+        var model = await DetailsViewModel.CreateAsync(id, false, _personRepository, _addressRepository, _personSpecialitiesRepository, _specialitiesRepository);
         return View(model);
     }
 
     public async Task<IActionResult> Edit(int id)
     {
-        var model = await DetailsViewModel.CreateAsync(id, true, _personRepository, _addressRepository);
+        var model = await DetailsViewModel.CreateAsync(id, true, _personRepository, _addressRepository, _personSpecialitiesRepository, _specialitiesRepository);
         return View("Details", model);
     }
 
@@ -67,19 +75,19 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddSpeciality(Speciality speciality)
+    public async Task<IActionResult> AddSpeciality([FromForm] string specialityName)
     {
-        await _specialitiesRepository.InsertAsync(speciality);
+        await _specialitiesRepository.InsertAsync(specialityName);
         var model = await SpecialitiesViewModel.CreateAsync(_specialitiesRepository);
-        return View("Speciality", model);
+        return View("Specialities", model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> RemoveSpeciality(Speciality speciality)
+    public async Task<IActionResult> RemoveSpeciality(int specialityId)
     {
-        await _specialitiesRepository.RemoveAsync(speciality.Id);
+        await _specialitiesRepository.RemoveAsync(specialityId);
         var model = await SpecialitiesViewModel.CreateAsync(_specialitiesRepository);
-        return View("Speciality", model);
+        return View("Specialities", model);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -13,11 +13,11 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 // DI
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<ISpecialitiesRepository, SpecialitiesRepository>();
+builder.Services.AddScoped<IPersonSpecialitiesRepository, PersonSpecialitiesRepository>();
 builder.Services.AddScoped<IDataImportService, DataImportService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddDbContext<DoctorDbContext>();
-
-//builder.Services.AddDbContext<DoctorDbContext>(options => options.UseMySql(Config.DbConnectionString));
 
 var app = builder.Build();
 

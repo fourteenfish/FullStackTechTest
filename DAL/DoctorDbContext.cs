@@ -25,6 +25,11 @@ namespace DAL
         public virtual DbSet<Speciality> specialities { get; set; }
 
         /// <summary>
+        /// People specialities mapping junciton table.
+        /// </summary>
+        public virtual DbSet<PeopleSpecialities> people_specialities { get; set; }
+
+        /// <summary>
         /// Connection string to connect to the database.
         /// </summary>
         private static string ConnectionString => Config.DbConnectionString;
@@ -36,6 +41,18 @@ namespace DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString));
+        }
+
+        /// <summary>
+        /// Override this method to explicity state the composite key for the junction table.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PeopleSpecialities>()
+                .HasKey(ps => new { ps.PersonId, ps.SpecialityId });
+
+            base.OnModelCreating(modelBuilder);
         }
 
     }
