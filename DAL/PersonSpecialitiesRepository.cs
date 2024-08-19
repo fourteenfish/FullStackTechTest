@@ -30,4 +30,37 @@ public class PersonSpecialitiesRepository : GenericRepository<PeopleSpecialities
     {
         return await this.dbContext.people_specialities.Where(x => x.PersonId == personId).Select(x => x.SpecialityId).ToListAsync();
     }
+
+    /// <summary>
+    /// Updates an Persons Specialities in the database with new parameters.
+    /// </summary>
+    /// <param name="specialityId">Speciality to update</param>
+    /// <param name="personId">Person to update</param>
+    /// <returns>Async Task.</returns>
+    public async Task SaveAsync(int specialityId, int personId)
+    {
+        PeopleSpecialities peopleSpecialities = new()
+        {
+            PersonId = personId,
+            SpecialityId = specialityId
+        };
+        await this.InsertAsync(peopleSpecialities);
+    }
+
+    /// <summary>
+    /// Updates an Persons Specialities in the database with new parameters.
+    /// </summary>
+    /// <param name="specialityId">Speciality to update</param>
+    /// <param name="personId">Person to update</param>
+    /// <returns>Async Task.</returns>
+    public async Task RemoveAsync(int specialityId, int personId)
+    {
+        var entities = await this.ListAllAsync();
+        var entity = entities.FirstOrDefault(x => x.SpecialityId == specialityId &&  x.PersonId == personId);
+        if (entity != null)
+        {
+            dbSet.Remove(entity);
+            await dbContext.SaveChangesAsync();
+        }
+    }
 }

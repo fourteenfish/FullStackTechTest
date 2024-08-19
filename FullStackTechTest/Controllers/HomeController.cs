@@ -67,6 +67,22 @@ public class HomeController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> AssociateSpeciality(int specialityId, int personId)
+    {
+        await _personSpecialitiesRepository.SaveAsync(specialityId, personId);
+        var model = await DetailsViewModel.CreateAsync(personId, true, _personRepository, _addressRepository, _personSpecialitiesRepository, _specialitiesRepository);
+        return View("Details", model);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DissociateSpeciality(int specialityId, int personId)
+    {
+        await _personSpecialitiesRepository.RemoveAsync(specialityId, personId);
+        var model = await DetailsViewModel.CreateAsync(personId, false, _personRepository, _addressRepository, _personSpecialitiesRepository, _specialitiesRepository);
+        return View("Details", model);
+    }
+
+    [HttpPost]
     public async Task<IActionResult> Import(IFormFile file)
     {
         await _dataImportService.LoadJsonDataAsync(file.FileName);

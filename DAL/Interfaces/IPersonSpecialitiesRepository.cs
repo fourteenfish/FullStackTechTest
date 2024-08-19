@@ -11,4 +11,6 @@ public interface IPersonSpecialitiesRepository
     Task InsertAsync(List<PeopleSpecialities> objects);
     Task<List<PeopleSpecialities>> ListAllAsync();
     Task RemoveAsync(int objId);
+    Task RemoveAsync(int specialityId, int personId);
+    Task SaveAsync(int specialityId, int personId);
 }

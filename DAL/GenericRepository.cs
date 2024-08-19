@@ -13,7 +13,7 @@ namespace DAL
         /// <summary>
         /// The DB set for this repository
         /// </summary>
-        private DbSet<T> dbSet;
+        protected DbSet<T> dbSet;
 
         /// <summary>
         /// The DB Context for database interactions.

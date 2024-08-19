@@ -1,5 +1,7 @@
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Linq;
 
@@ -7,9 +9,11 @@ namespace FullStackTechTest.Models.Home;
 
 public class DetailsViewModel
 {
-    public Person Person { get; set; }
-    public Address Address { get; set; }
-    public List<string> PeopleSpecialities { get; set; }
+    public Person Person { get; set; } = new();
+    public Address Address { get; set; } = new();
+    public List<string> PersonsSpecialities { get; set; } = new();
+    public List<Speciality> AllSpecialities { get; set; } = new();
+    public int SpecialityToAdd { get; set; }
     public bool IsEditing { get; set; }
 
     public static async Task<DetailsViewModel> CreateAsync(int personId, 
@@ -24,8 +28,9 @@ public class DetailsViewModel
         {
             Person = await personRepository.GetByIdAsync(personId) ?? new(),
             Address = await addressRepository.GetForPersonIdAsync(personId) ?? new(),
-            PeopleSpecialities = await specialitiesRepository.RetrieveSpecialityNamesAsync(personsSpecialities),
-            IsEditing = isEditing
+            PersonsSpecialities = await specialitiesRepository.RetrieveSpecialityNamesAsync(personsSpecialities),
+            IsEditing = isEditing,
+            AllSpecialities = await specialitiesRepository.ListAllAsync()
         };
         return model;
     }
