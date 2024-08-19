@@ -47,7 +47,7 @@ namespace FullStackTechTest.Services
                 // Deserialise and validate data
                 List<Person> people = JsonConvert.DeserializeObject<List<Person>>(strJson)?
                     .Where(per => isValidPerson(per)).ToList() ?? throw new JsonException();
-                await this.personRepository.InsertListAsync(people);
+                await this.personRepository.InsertAsync(people);
                 this.logger.LogInformation($"Successfully imported {people.Count} rows of JSON data to database.");
             }
             catch (Exception ex)

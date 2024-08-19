@@ -13,6 +13,7 @@ namespace DAL.Interfaces
         Task SaveAsync(T itemToSave);
         Task<T?> GetByIdAsync(int objectId);
         Task InsertAsync(T obj);
-        Task InsertListAsync(List<T> objects);
+        Task InsertAsync(List<T> objects);
+        Task RemoveAsync(int objId);
     }
 }

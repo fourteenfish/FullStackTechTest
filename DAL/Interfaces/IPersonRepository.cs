@@ -9,6 +9,6 @@ public interface IPersonRepository
     Person? GetByGmcAsync(int gmcId);
     Task SaveAsync(Person person);
     Task InsertAsync(Person obj);
-    Task InsertListAsync(List<Person> people);
+    Task InsertAsync(List<Person> people);
 
 }

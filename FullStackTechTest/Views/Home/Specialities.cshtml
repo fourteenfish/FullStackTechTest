@@ -1,0 +1,31 @@
+@model FullStackTechTest.Models.Home.SpecialitiesViewModel
+
+@{
+    ViewData["Title"] = "Specialities Editor";
+}
+<div class="container">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Speciality</th>                
+            </tr>
+        </thead>
+        <form method="post" enctype="multipart/form-data" action="/Home/Import">
+            Select file to import: <input type="file" name="file" required />
+            <br />
+            <input type="submit" value="Import" />
+        </form>
+
+        <tbody>s
+            @foreach (var speciality in Model?.SpecialityList)
+            {
+                <tr class="clickable-row" data-href="@Url.Action("Details", new { id = speciality.Id })">
+                    <td>@speciality.Id</td>
+                    <td>@speciality.SpecialityName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -38,6 +38,18 @@
             <label>GMC:</label>
             <input type="number" name="person.gmc" value="@Model.Person.GMC" class="@(Model.IsEditing ? "form-control" : "form-control-plaintext")" @(Model.IsEditing ? "" : "readonly")/>
         </div>
+        <div class="form-group pb-4">
+            <label>Specialities:</label>
+            <select @Model.Person.Specialities class="@(Model.IsEditing ? "form-control" : "form-control-plaintext")" @(Model.IsEditing ? "" : "readonly")>
+                @if (Model?.Person != null && Model?.Person.Specialities != null)
+                {
+                    @foreach (var spec in Model?.Person?.Specialities!)
+                    {
+                        <option value="@spec.Id">@spec.SpecialityName</option>
+                    }
+                }
+            </select>            
+        </div>
 
         <div class="form-group pb-1">
             <label>Address:</label>

@@ -20,6 +20,11 @@ namespace DAL
         public virtual DbSet<Person> people { get; set; }
 
         /// <summary>
+        /// Specialities data
+        /// </summary>
+        public virtual DbSet<Speciality> specialities { get; set; }
+
+        /// <summary>
         /// Connection string to connect to the database.
         /// </summary>
         private static string ConnectionString => Config.DbConnectionString;
@@ -32,5 +37,6 @@ namespace DAL
         {
             optionsBuilder.UseMySql(ConnectionString, ServerVersion.AutoDetect(ConnectionString));
         }
+
     }
 }

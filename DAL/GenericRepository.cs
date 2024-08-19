@@ -77,13 +77,28 @@ namespace DAL
         /// </summary>
         /// <param name="obj">Object to insert</param>
         /// <returns>Task of operation.</returns>
-        public async Task InsertListAsync(List<T> objects)
+        public async Task InsertAsync(List<T> objects)
         {
             foreach (var obj in objects)
             {
                 await dbSet.AddAsync(obj);
             }
             await dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes an item from the repository.
+        /// </summary>
+        /// <param name="objId">Id of object to remove</param>
+        /// <returns>Task of operation.</returns>
+        public async Task RemoveAsync(int objId)
+        {
+            var objectToDelete = await this.GetByIdAsync(objId);
+            if (objectToDelete != null)
+            {
+                dbContext.Remove(objectToDelete);
+                await dbContext.SaveChangesAsync();
+            }
         }
     }
 }
