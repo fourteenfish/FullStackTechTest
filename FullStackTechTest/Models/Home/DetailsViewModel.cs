@@ -13,7 +13,6 @@ public class DetailsViewModel
     public Address Address { get; set; } = new();
     public List<string> PersonsSpecialities { get; set; } = new();
     public List<Speciality> AllSpecialities { get; set; } = new();
-    public int SpecialityToAdd { get; set; }
     public bool IsEditing { get; set; }
 
     public static async Task<DetailsViewModel> CreateAsync(int personId, 

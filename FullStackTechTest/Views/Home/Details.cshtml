@@ -39,7 +39,7 @@
             <input type="number" name="person.gmc" value="@Model.Person.GMC" class="@(Model.IsEditing ? "form-control" : "form-control-plaintext")" @(Model.IsEditing ? "" : "readonly")/>
         </div>
         <div class="form-group pb-4">
-            <label>@(Model.IsEditing ? "All Specialities:" : $"{Model.Person.FirstName}'s Specialities:")</label>
+            <label>@($"{Model.Person.FirstName}'s Specialities:")</label>
             <select @Model.PersonsSpecialities class="@(Model.IsEditing ? "form-control" : "form-control-plaintext")" @(Model.IsEditing ? "" : "readonly")>
                 @if (Model?.Person != null && Model?.PersonsSpecialities != null)
                 {
@@ -49,7 +49,7 @@
                     }
                 }
             </select>
-            @if(Model.IsEditing)
+            @if(Model!.IsEditing)
             {               
                 <table class="table table-bordered table-hover">
                     <thead>

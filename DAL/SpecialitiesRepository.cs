@@ -52,10 +52,10 @@ public class SpecialitiesRepository : GenericRepository<Speciality>, ISpecialiti
     public new async Task RemoveAsync(int specialityId)
     {
         var objectToDelete = await this.GetByIdAsync(specialityId);
-        var dependantObjectToDelete = await dbContext.people_specialities.FirstOrDefaultAsync(x => x.SpecialityId == specialityId);
-        if (dependantObjectToDelete != null)
+        var dependantObjectsToDelete = dbContext.people_specialities.Where(x => x.SpecialityId == specialityId);
+        if (dependantObjectsToDelete != null)
         {
-            dbContext.Remove(dependantObjectToDelete);
+            await dependantObjectsToDelete.ForEachAsync(x => dbContext.Remove(x));
         }
         if(objectToDelete != null)
         {

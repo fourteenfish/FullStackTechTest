@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorDatabaseTests", "DoctorDatabaseTests\DoctorDatabaseTests.csproj", "{115D85A7-BB3D-4539-BEC6-060F2769C735}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C876A6-2AC7-4D5D-97ED-3C40E15BBF8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{115D85A7-BB3D-4539-BEC6-060F2769C735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{115D85A7-BB3D-4539-BEC6-060F2769C735}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{115D85A7-BB3D-4539-BEC6-060F2769C735}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{115D85A7-BB3D-4539-BEC6-060F2769C735}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

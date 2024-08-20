@@ -5,6 +5,7 @@
 }
 
 <div class="container">
+        <br/>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -13,14 +14,6 @@
             <th>Last Name</th>
         </tr>
         </thead>
-
-        <form method="post" enctype="multipart/form-data" action="/Home/Import">
-            Select file to import: <input type="file" name="file" required />
-            <br />
-            <input type="submit" value="Import" />
-        </form>
-
-
         <tbody>
         @foreach (var person in Model.PeopleList)
         {

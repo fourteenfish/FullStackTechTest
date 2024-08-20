@@ -45,7 +45,11 @@ public class HomeController : Controller
         var model = await SpecialitiesViewModel.CreateAsync(_specialitiesRepository);
         return View(model);
     }
-
+    public async Task<IActionResult> ImportManager()
+    {
+        var model = await IndexViewModel.CreateAsync(_personRepository);
+        return View(model);
+    }
     public async Task<IActionResult> Details(int id)
     {
         var model = await DetailsViewModel.CreateAsync(id, false, _personRepository, _addressRepository, _personSpecialitiesRepository, _specialitiesRepository);
@@ -85,9 +89,9 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Import(IFormFile file)
     {
-        await _dataImportService.LoadJsonDataAsync(file.FileName);
+        bool success = await _dataImportService.LoadJsonDataAsync(file.FileName);
         var model = await IndexViewModel.CreateAsync(_personRepository);
-        return View("Index", model);
+        return success ? View("Index", model) : Error();
     }
 
     [HttpPost]

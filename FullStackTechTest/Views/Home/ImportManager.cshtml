@@ -1,0 +1,11 @@
+@{
+    ViewData["Title"] = "Import JSON Data";
+}
+<div class="container">
+    <form method="post" enctype="multipart/form-data" action="/Home/Import">
+        Select file to import: <input type="file" name="file" required />
+        <br />
+        <input type="submit" value="Import" />
+    </form>
+</div>
+
