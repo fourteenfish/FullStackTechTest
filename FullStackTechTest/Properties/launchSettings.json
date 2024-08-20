@@ -5,7 +5,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_CONNECTION_STRING": "Server=localhost;Database=fourteenFish;Uid=root;Pwd=Seinfeld123!;"//TODO: secure pw
+        "DB_CONNECTION_STRING": "<Connection_String>"
       },
       "applicationUrl": "https://localhost:50839;http://localhost:50840"
     }
